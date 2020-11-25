@@ -6,6 +6,7 @@ public class Dimonik : MonoBehaviour
 {
     public float m_speed;
 
+    [SerializeField] private Health m_health;
     private SpriteRenderer m_renderer;
     private Rigidbody2D m_rigidBody;
     private Animator m_animator;
@@ -49,12 +50,33 @@ public class Dimonik : MonoBehaviour
         {
             m_renderer.flipX = true;
         }
-        
     }
 
     private void FixedUpdate()
     {
         m_rigidBody.MovePosition(m_rigidBody.position + m_moveVector * m_speed * Time.fixedDeltaTime);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            ChangeHealth(-1);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Projectile"))
+        {
+            ChangeHealth(1);
+        }
+    }
+
+    public void ChangeHealth(int l_health)
+    {
+        m_health.ChangeHealth(l_health);
+
     }
 
 }
