@@ -23,16 +23,27 @@ public class RoomRandomizer : MonoBehaviour
 
     // Enemies
     public GameObject[] m_enemies;
+    private List<GameObject> m_spawnedEnemies = new List<GameObject>();
 
 
     public void RandomizeRoom(Location l_spawnLocation)
     {
+        CleanRoom();
         RandomizeBackground();
         SpawnDimonic(l_spawnLocation);
         SpawnDoors(l_spawnLocation);
         RandomizeDoors();
         RandomizeDetails();
         RandomizeEnemies();
+    }
+
+    private void CleanRoom()
+    {
+        foreach (var enemy in m_spawnedEnemies)
+        {
+            Destroy(enemy);
+        }
+        m_spawnedEnemies.Clear();
     }
 
     private void RandomizeBackground()
@@ -80,7 +91,17 @@ public class RoomRandomizer : MonoBehaviour
 
     private void RandomizeEnemies()
     {
-
+        int enemiesToSpawn = Random.Range(1, 4);
+        Vector2 ghostPosition;
+        float x, y;
+        for (int i = 0; i < enemiesToSpawn; ++i)
+        {
+            x = Random.Range(-4.0f, 4.0f);
+            y = Random.Range(-1.6f, 1.6f);
+            ghostPosition = new Vector2(x, y);
+            GameObject ghost = Instantiate(m_enemies[Random.Range(0, m_enemies.Length)], ghostPosition, Quaternion.identity);
+            m_spawnedEnemies.Add(ghost);
+        }
     }
 
     private void RandomizeDetails()

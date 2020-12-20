@@ -7,13 +7,14 @@ public class Dimonik : MonoBehaviour
     public float m_speed;
     public GameObject m_booger;
     public GameManager m_gameManager;
-
+    
     [SerializeField] private Health m_health;
     private SpriteRenderer m_renderer;
     private Rigidbody2D m_rigidBody;
     private Animator m_animator;
     private Vector2 m_moveVector = new Vector2();
     private bool m_canMove = true;
+    private bool m_canTakeDamage = true;
 
     private void Start()
     {
@@ -76,11 +77,20 @@ public class Dimonik : MonoBehaviour
         }
     }
 
+    private IEnumerator TakeDamage()
+    {
+        yield return new WaitForSeconds(1);
+        m_canTakeDamage = true;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Projectile"))
+        if (collision.CompareTag("Baddie") && m_canTakeDamage)
         {
-            ChangeHealth(1);
+            Debug.Log("PUM");
+            m_canTakeDamage = false;
+            ChangeHealth(-1);
+            StartCoroutine(TakeDamage());
         }
         else if (collision.CompareTag("Door"))
         {

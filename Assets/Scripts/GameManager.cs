@@ -17,6 +17,14 @@ public class GameManager : MonoBehaviour
         m_roomRandomizer = GetComponent<RoomRandomizer>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
     // Pass door location where player changed room to calculate new player position (opposite side)?
     public void ChangeRoom(Location l_spawnLocation)
     {

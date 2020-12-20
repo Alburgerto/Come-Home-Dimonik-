@@ -15,10 +15,13 @@ public class Health : MonoBehaviour
     {
         m_healthIcons = GetComponentsInChildren<SpriteRenderer>();
         m_maxHealth = m_healthIcons.Length;
+        m_health = m_maxHealth;
     }
 
     public void ChangeHealth(int l_health)
     {
+        Debug.Log(m_health);
+
         m_health = Mathf.Clamp(m_health + l_health, 0, m_maxHealth);
         for (int i = 0; i < m_maxHealth; ++i)
         {
@@ -34,6 +37,7 @@ public class Health : MonoBehaviour
                 m_healthIcons[i].sprite = m_healthOn;
             }
         }
+        Debug.Log("Max: "+m_maxHealth);
 
         if (m_health == 0)
         {
